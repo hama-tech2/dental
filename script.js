@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ---------- Language (one i18n object, one setLang) ---------- */
   const i18n = {
     ckb: {
-      navServices: "خزمەتگوزارییەکان", navTechnology: "تەکنەلۆجیا", navTeam: "تیمەکەمان", navFaq: "پرسیارەکان",
+      navHome: "ماڵەوە", navServices: "خزمەتگوزارییەکان", navTechnology: "تەکنەلۆجیا", navTeam: "تیمەکەمان", navFaq: "پرسیارەکان",
       bookNow: "نۆرە بگرە", heroEyebrow: "کلینیکی ددانی نوێ لە هەولێر",
       heroTitle: "پێکەنینێکی <em>دڵنیاتر</em>، هەموو ڕۆژێک.",
       heroDescription: "لە Promed، چاودێریی نەرم و تەکنەلۆژیای نوێ پێکەوە دەبەستینەوە بۆ ئارامی تۆ.",
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
 
     en: {
-      navServices: "Services", navTechnology: "Technology", navTeam: "Our team", navFaq: "FAQ",
+      navHome: "Home", navServices: "Services", navTechnology: "Technology", navTeam: "Our team", navFaq: "FAQ",
       bookNow: "Book now", heroEyebrow: "Modern dental clinic in Erbil",
       heroTitle: "A <em>more confident</em> smile, every day.",
       heroDescription: "At Promed, we connect gentle clinical care with modern technology, built around your comfort.",
@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
 
     ar: {
-      navServices: "الخدمات", navTechnology: "التقنية", navTeam: "فريقنا", navFaq: "الأسئلة",
+      navHome: "الرئيسية", navServices: "الخدمات", navTechnology: "التقنية", navTeam: "فريقنا", navFaq: "الأسئلة",
       bookNow: "احجز موعداً", heroEyebrow: "عيادة أسنان حديثة في أربيل",
       heroTitle: "ابتسامة <em>أكثر ثقة</em> كل يوم.",
       heroDescription: "في Promed، نجمع الرعاية اللطيفة مع التكنولوجيا الحديثة، حول راحتك أنت.",
@@ -265,12 +265,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  /* Technology step highlight (also clickable) */
+  /* Technology: hover to swap image + highlight step (tap on touch) */
   function activateTechnology(name) {
     $$(".technology-point").forEach((p) => p.classList.toggle("active", p.dataset.tech === name));
     $$(".technology-image").forEach((img) => img.classList.toggle("active", img.dataset.techImage === name));
   }
-  $$(".technology-point").forEach((p) => p.addEventListener("click", () => activateTechnology(p.dataset.tech)));
+  $$(".technology-point").forEach((p) => {
+    p.addEventListener("mouseenter", () => activateTechnology(p.dataset.tech));
+    p.addEventListener("focus", () => activateTechnology(p.dataset.tech));
+    p.addEventListener("click", () => activateTechnology(p.dataset.tech));
+  });
 
   /* Demo booking form */
   const form = $("#booking-form");
@@ -330,13 +334,12 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    // 16 — Scroll text-fill (vertical top→bottom, gray→blue)
+    // Story statement: gentle fade/rise on enter (no gray→blue fill)
     const scrollFill = $(".scroll-fill");
     if (scrollFill) {
-      scrollFill.classList.add("enhanced");
-      ScrollTrigger.create({
-        trigger: ".story-section", start: "top 78%", end: "bottom 55%", scrub: true,
-        onUpdate: (self) => scrollFill.style.setProperty("--fill", `${Math.round(self.progress * 100)}%`)
+      gsap.from(scrollFill, {
+        y: 28, opacity: 0, duration: 0.9, ease: "power3.out",
+        scrollTrigger: { trigger: ".story-section", start: "top 75%" }
       });
     }
 
@@ -357,25 +360,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     gsap.set(".stagger > *", { y: 40, opacity: 0 });
 
-    // 17 — Technology: pinned + scrub image swap + step highlight
-    const techSection = $("[data-tech-pin]");
-    const techPoints = $$(".technology-point");
-    if (techSection && techPoints.length) {
-      gsap.matchMedia().add("(min-width: 761px)", () => {
-        const steps = techPoints.map((p) => p.dataset.tech);
-        ScrollTrigger.create({
-          trigger: techSection,
-          start: "top top",
-          end: `+=${steps.length * 55}%`,
-          pin: true,
-          scrub: 0.5,
-          onUpdate: (self) => {
-            const idx = Math.min(steps.length - 1, Math.floor(self.progress * steps.length));
-            activateTechnology(steps[idx]);
-          }
-        });
-      });
-    }
 
     // 19 — Scatter reveal: collage items fly in tilted, settle straight
     const collageItems = $$("[data-collage] [data-scatter]");
@@ -387,18 +371,19 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    // 20 — Reviews marquee: seamless infinite loop (duplicate track), pause on hover
+    // 20 — Reviews marquee: seamless infinite loop, smooth pause on hover
     const track = $("[data-marquee]");
     if (track) {
-      const original = [...track.children];
-      original.forEach((card) => track.appendChild(card.cloneNode(true)));
-      const dir = document.documentElement.dir === "rtl" ? 1 : -1;
-      const loop = gsap.to(track, {
-        xPercent: dir * -50, ease: "none", duration: 22, repeat: -1  // ~1.6x faster than the old 42s CSS marquee
-      });
+      const set = [...track.children];
+      set.forEach((card) => track.appendChild(card.cloneNode(true)));
+      // exact width of one set (cards + their inline-end margins) for a seamless wrap
+      const marginEnd = parseFloat(getComputedStyle(set[0]).marginInlineEnd || getComputedStyle(set[0]).marginRight) || 0;
+      const setWidth = set.reduce((w, c) => w + c.getBoundingClientRect().width + marginEnd, 0);
+      const speed = 80; // px per second
+      const loop = gsap.fromTo(track, { x: 0 }, { x: -setWidth, duration: setWidth / speed, ease: "none", repeat: -1 });
       const win = $(".testimonial-window");
-      win.addEventListener("pointerenter", () => loop.timeScale(0.15));
-      win.addEventListener("pointerleave", () => loop.timeScale(1));
+      win.addEventListener("pointerenter", () => gsap.to(loop, { timeScale: 0, duration: 0.35 }));
+      win.addEventListener("pointerleave", () => gsap.to(loop, { timeScale: 1, duration: 0.35 }));
     }
 
     // 21 — Card lift handled in CSS; add subtle tilt on doctor cards
