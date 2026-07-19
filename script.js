@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ckb: {
       navHome: "ماڵەوە", navServices: "خزمەتگوزارییەکان", navTechnology: "تەکنەلۆجیا", navTeam: "تیمەکەمان", navFaq: "پرسیارەکان",
       bookNow: "نۆرە بگرە", heroEyebrow: "کلینیکی ددانی نوێ لە هەولێر",
-      heroTitle: "پێکەنینێکی <em>دڵنیاتر</em>، هەموو ڕۆژێک.",
+      heroTitle: "پێکەنینێکی <em>جوانتر</em> بۆ هەموو ڕۆژێک.",
       heroDescription: "لە Promed، چاودێریی نەرم و تەکنەلۆژیای نوێ پێکەوە دەبەستینەوە بۆ ئارامی تۆ.",
       heroCtaBook: "نۆرە بگرە", heroCtaServices: "خزمەتگوزارییەکان", heroCtaLocation: "شوێن",
       heroTrust: "چاودێرییەکی سەلامەت، پاک و بە متمانە",

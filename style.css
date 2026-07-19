@@ -119,13 +119,9 @@ html[dir="ltr"] .text-link:hover svg { transform: translateX(.25rem); }
 .hero-video { position: absolute; z-index: -2; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .hero-scrim { position: absolute; z-index: -1; inset: 0; pointer-events: none;
   background:
-    radial-gradient(120% 120% at 88% 50%, rgba(10,29,73,.72) 0%, rgba(10,29,73,.5) 32%, transparent 60%),
-    linear-gradient(90deg, transparent 0%, transparent 34%, rgba(10,29,73,.28) 66%, rgba(10,29,73,.55) 100%);
-}
-html[dir="ltr"] .hero-scrim {
-  background:
-    radial-gradient(120% 120% at 88% 50%, rgba(10,29,73,.72) 0%, rgba(10,29,73,.5) 32%, transparent 60%),
-    linear-gradient(90deg, transparent 0%, transparent 34%, rgba(10,29,73,.28) 66%, rgba(10,29,73,.55) 100%);
+    radial-gradient(85% 95% at 82% 46%, rgba(9,24,58,.62) 0%, rgba(9,24,58,.32) 40%, transparent 66%),
+    linear-gradient(90deg, transparent 0%, transparent 42%, rgba(9,24,58,.34) 70%, rgba(9,24,58,.7) 100%),
+    linear-gradient(0deg, rgba(9,24,58,.4) 0%, transparent 34%);
 }
 .hero-inner { display: flex; padding-top: 6.5rem; padding-bottom: 4rem; }
 .hero-copy { max-width: 620px; min-width: 0; margin-left: auto; text-align: start; }
@@ -139,9 +135,9 @@ html[dir="ltr"] .hero-scrim {
 /* Trust strip (white) */
 .trust-strip { padding: 2.6rem 0; background: var(--white); }
 .trust-grid { display: grid; grid-template-columns: repeat(4,1fr); }
-.trust-item { display: flex; min-height: 82px; align-items: center; justify-content: center; gap: .55rem; padding: .8rem; color: var(--blue); border-inline-start: 1px solid var(--line); font-size: .66rem; font-weight: 700; text-align: center; }
+.trust-item { display: flex; min-height: 92px; align-items: center; justify-content: center; gap: .7rem; padding: .8rem; color: var(--blue); border-inline-start: 1px solid var(--line); font-size: .68rem; font-weight: 700; text-align: center; }
 .trust-item:first-child { border-inline-start: 0; }
-.trust-item svg { width: 1.2rem; flex: 0 0 auto; color: var(--sage); }
+.trust-item svg { width: 2.1rem; height: 2.1rem; flex: 0 0 auto; padding: .5rem; color: var(--sage); background: var(--sage-bg); border-radius: 50%; }
 
 /* Story / scroll fill (blue-bg) */
 .story-section { padding: clamp(5.5rem,12vw,11rem) 0; background: var(--blue-bg); }
@@ -161,9 +157,10 @@ html[dir="ltr"] .hero-scrim {
 .service-media { overflow: hidden; }
 .service-media img { aspect-ratio: 4 / 3; transition: transform .55s ease; }
 .service-card:hover .service-media img { transform: scale(1.07); }
-.service-content { display: flex; flex-direction: column; padding: 1.25rem 1.35rem 1.4rem; }
-.service-content > svg { width: 1.3rem; height: 1.3rem; margin-bottom: .5rem; color: var(--sage); }
-.service-content h3 { margin-bottom: 0; font-size: 1.02rem; }
+.service-content { display: flex; flex-direction: column; padding: 1.3rem 1.4rem 1.5rem; }
+.service-content > svg { width: 2.5rem; height: 2.5rem; margin-bottom: .8rem; padding: .62rem; color: var(--blue); background: var(--blue-bg); border-radius: .9rem; transition: color .3s ease, background .3s ease; }
+.service-card:hover .service-content > svg { color: var(--white); background: var(--coral); }
+.service-content h3 { margin-bottom: 0; font-size: 1.05rem; }
 .service-hover { display: grid; grid-template-rows: 0fr; overflow: hidden; opacity: 0; transition: grid-template-rows .4s ease, opacity .3s ease, margin-top .4s ease; }
 .service-card:hover .service-hover { grid-template-rows: 1fr; opacity: 1; margin-top: .5rem; }
 .service-hover > * { min-height: 0; }
